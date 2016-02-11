@@ -3,6 +3,13 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     concat: {
+      options: {
+        seperator: ';'
+      },
+      dist: {
+        src: ['app/**/*.js', 'lib/*.js', 'public/**/*.js', '*.js'],
+        dest: 'public/dist/built.js'
+      }
     },
 
     mochaTest: {
@@ -21,11 +28,17 @@ module.exports = function(grunt) {
     },
 
     uglify: {
+      dist: {
+        files: {
+          'public/dist/built.min.js': ['public/dist/built.js']
+        } 
+      }
     },
 
     eslint: {
       target: [
         // Add list of files to lint here
+        'app/**/*.js', 'lib/*.js', 'public/**/*.js', '*.js'
       ]
     },
 
@@ -51,6 +64,7 @@ module.exports = function(grunt) {
 
     shell: {
       prodServer: {
+        command: 'git add .; git commit -m "Updating server"; git push live master'
       }
     },
 
@@ -118,9 +132,15 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('deploy', [
+  grunt.registerTask('deploy', function() {
     // add your deploy tasks here
-  ]);
+    if (grunt.option('prod')) {
+      console.log('yoyoyo');
+      grunt.task.run(['shell']);
+    } else {
+      grunt.task.run(['concat', 'uglify', 'eslint', 'mochaTest']);
+    }
+  });
 
 
 };
