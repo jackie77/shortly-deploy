@@ -4,10 +4,12 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
     concat: {
       options: {
-        seperator: ';'
+        seperator: ';\n'
       },
       dist: {
-        src: ['app/**/*.js', 'lib/*.js', 'public/**/*.js', '*.js'],
+        // src: ['public/lib/jquery.js','public/lib/underscore.js','public/lib/backbone.js',
+              // 'public/lib/handlebars.js', 'public/client/*.js'],
+        src: ['public/client/*.js'],
         dest: 'public/dist/built.js'
       }
     },
@@ -66,17 +68,7 @@ module.exports = function(grunt) {
       prodServer: {
         command: 'git add .; git commit -m "Updating server"; git push live master'
       }
-    },
-
-    // git_deploy: {
-    //   your_target: {
-    //     options : {
-    //       url: 'root@104.236.170.237/root/repo/site.git'
-    //     },
-
-    //     src: 'root/shortly-deploy'
-    //   }
-    // },
+    }
   });
 
   grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -103,25 +95,17 @@ module.exports = function(grunt) {
   });
 
 
-  grunt.registerTask('upload', function(n) {
-    if (grunt.option('prod')) {
-      // add your production server task here
-    }
-    grunt.task.run([ 'server-dev' ]);
-  });
 
   ////////////////////////////////////////////////////
   // Main grunt tasks
   ////////////////////////////////////////////////////
 
   grunt.registerTask('test', [
-    'mochaTest'
+    'eslint', 'mochaTest'
   ]);
 
-  grunt.registerTask('default', ['nodemon'
-  ]);
-
-  grunt.registerTask('build', ['git_deploy'
+  grunt.registerTask('build', [
+    'concat', 'uglify'
   ]);
 
   grunt.registerTask('upload', function(n) {
@@ -136,9 +120,9 @@ module.exports = function(grunt) {
     // add your deploy tasks here
     if (grunt.option('prod')) {
       console.log('yoyoyo');
-      grunt.task.run(['shell']);
+      grunt.task.run(['build']);
     } else {
-      grunt.task.run(['concat', 'uglify', 'eslint', 'mochaTest']);
+      grunt.task.run(['test','upload']);
     }
   });
 
