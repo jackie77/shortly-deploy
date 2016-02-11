@@ -53,12 +53,23 @@ module.exports = function(grunt) {
       prodServer: {
       }
     },
+
+    git_deploy: {
+      your_target: {
+        options : {
+          url: 'root@104.236.170.237/root/repo/site.git'
+        },
+
+        src: 'root/shortly-deploy'
+      }
+    },
   });
 
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-git-deploy');
   grunt.loadNpmTasks('grunt-eslint');
   grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-shell');
@@ -93,7 +104,10 @@ module.exports = function(grunt) {
     'mochaTest'
   ]);
 
-  grunt.registerTask('build', [
+  grunt.registerTask('default', ['nodemon'
+  ]);
+
+  grunt.registerTask('build', ['git_deploy'
   ]);
 
   grunt.registerTask('upload', function(n) {
