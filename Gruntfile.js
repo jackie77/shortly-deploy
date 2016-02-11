@@ -54,15 +54,15 @@ module.exports = function(grunt) {
       }
     },
 
-    git_deploy: {
-      your_target: {
-        options : {
-          url: 'root@104.236.170.237/root/repo/site.git'
-        },
+    // git_deploy: {
+    //   your_target: {
+    //     options : {
+    //       url: 'root@104.236.170.237/root/repo/site.git'
+    //     },
 
-        src: 'root/shortly-deploy'
-      }
-    },
+    //     src: 'root/shortly-deploy'
+    //   }
+    // },
   });
 
   grunt.loadNpmTasks('grunt-contrib-uglify');
